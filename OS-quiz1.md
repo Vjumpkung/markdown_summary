@@ -360,3 +360,70 @@ KeyboardInterrupt <-- จุดเกิด Interrupt
   - gdb
   - perf
   - tcpdump
+
+<hr>
+
+## บทที่ 3 (ถึงหน้า 18) Processes
+
+### Process Concept
+- process
+  - เป็นการประมวลแบบ sequential โดยทำได้ทีละ process
+  - Multiple parts
+    - program code เป็น text section
+    - โดยแต่ละ activity จะใช้ program counter, register
+    - stack จะเก็บ temporary data
+    - data section จะเก็บ global variables
+    - heap จะเก็บ memory ที่จองไว้ใน runtime
+  
+![](https://media.discordapp.net/attachments/1131128255735410688/1131212590215860304/image0.jpg?width=432&height=625)
+
+### Process State
+- New
+- Running
+- Waiting
+- Ready
+- Terminated
+
+![](https://media.discordapp.net/attachments/1131128255735410688/1131212930973700269/image0.jpg?width=1440&height=581)
+
+### Process Control Block
+
+![](https://media.geeksforgeeks.org/wp-content/uploads/process-table.jpg)
+
+- Process State : สถานะของ process
+- Program Counter : คือ ตำแหน่งของคำสั่งที่จะทำงานถัดไป
+- CPU Register
+- CPU sechduling information
+- Memory-management information : คือ ส่วนที่เก็บข้อมูลของ memory ที่ใช้งานอยู่
+- Accounting information : คือ CPU used, clock time, time limits
+- I/O status information : คือ ส่วนที่เก็บข้อมูลของ I/O ที่ใช้งานอยู่
+
+### Threads
+
+- อธิบายใน บท 4
+
+### Process Scheduling
+- Process Scheduler จะเป็นส่วนที่จัดการกับ CPU ว่าจะให้ process ไหนทำงานก่อน
+- Goal --> Maximize CPU
+- จัดการ scheduling queues ของ process
+  - Ready Queue
+  - Wait Queue
+  - Process สามารถโดดไปโดดมาระหว่าง queue ได้
+  
+![](https://media.discordapp.net/attachments/1131128255735410688/1131217550605295676/image0.jpg?width=674&height=625)
+
+![](https://cdn.discordapp.com/attachments/1131128255735410688/1131217812891906149/image0.jpg)
+
+![](https://media.discordapp.net/attachments/1131128255735410688/1131218096271675422/image0.jpg?width=791&height=625)
+
+### Context Switch
+
+- การเปลี่ยน process ที่ทำงานอยู่ให้เป็น process อื่น จะต้องมีการ save the state ก่อน แล้ว load state ใหม่จาก app ใหม่
+
+### Multitasking in Mobile Systems
+- ใน mobile จะมีการทำงานแบบ multitasking แต่จะมีการจำกัดในการทำงานบางอย่าง
+  - เช่น ใน iOS สมัยก่อนทำงานได้ทีละโปรแกรมเท่านั้น แต่ปัจจุบันทำงานได้หลายโปรแกรมพร้อมกัน
+  - Android มี foreground, background แต่มี limit บางอย่าง
+    - Background ใช้ service แทน
+    - service รันอยู่ใน background service จะไม่มี UI
+    - ใช้ memory น้อย

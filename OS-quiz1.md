@@ -249,6 +249,7 @@ KeyboardInterrupt <-- จุดเกิด Interrupt
   - allow and deny user access
 
 **UNIX และ Windows ก็มี system calls ต่างกัน**
+
 ![](https://media.discordapp.net/attachments/1131128255735410688/1131178793059496038/image0.jpg?width=615&height=676)
 
 ### System Services

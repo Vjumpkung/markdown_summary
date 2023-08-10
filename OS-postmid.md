@@ -219,3 +219,102 @@ incorrect use :
 - Deadlock รูปแบบอื่น 
   - Starvation - indefinite blocking
   - Priority Inversion - low-priority โดน high-priority lock
+  
+## บทที่ 7 Synchronization Examples
+
+### Classical Problems 
+
+- Bounded-Buffer
+  - n buffer
+  - semaphore mutex = 1 , full = 0 , empty = n
+  - producer ![](https://media.discordapp.net/attachments/1131128255735410688/1139050818750926849/image0.jpg?width=939&height=671)
+  - consumer ![](https://media.discordapp.net/attachments/1131128255735410688/1139050903949807676/image0.jpg?width=1153&height=671)
+- Readers and Writers
+  - dataset shared หลายๆ processes
+    - readers - read dataset
+    - writers - read and write
+  - problem
+    - allow multiple writers
+      - only one single wrtiter can access
+    - shared data
+      - `data set`
+      - `semaphore rw_mutex = 1`
+      - `semaphore mutex = 1`
+      - `read_count = 0`
+    - writers
+      - ![](https://media.discordapp.net/attachments/1131128255735410688/1139052231069536426/image0.jpg?width=1100&height=606)
+    - readers
+      - ![](https://media.discordapp.net/attachments/1131128255735410688/1139052463090061322/IMG_2422.png?width=883&height=671)
+    - ปัญหา
+      - writers process never writes 
+      - second reader-writer problem
+- Dining-Philosophers
+  - N philosophers นั่งโต๊ะจีนโดยมีข้าวอยู่ตรงกลาง โดยไม่สุงสิงกับใคร
+  - แต่มีตะเกียบแค่ข้างเดียว โดยการใช้คือ หยิบ 2 ข้างเพื่อกินข้าว
+  - ![](https://media.discordapp.net/attachments/1131128255735410688/1139053546961129472/image0.jpg?width=387&height=375)
+  - implement เป็น
+    - `bowl of rice (data set)`
+    - `semaphore chopstick[5] = {1,1,1,1,1}`
+  - ![](https://media.discordapp.net/attachments/1131128255735410688/1139054209648570378/image0.jpg?width=772&height=671)
+  - ปัญหาคือ หยิบพร้อมกัน
+  - ![](https://media.discordapp.net/attachments/1131128255735410688/1139054884293967993/image0.jpg?width=477&height=671)
+  - Solution
+    - ![](https://media.discordapp.net/attachments/1131128255735410688/1139055230777045072/IMG_2429.png?width=1252&height=671)
+  - ไม่มี deadlock แต่ยังมี starvation ยังมีอยู่
+    - `block | x | block`
+
+### Kernel Synchronization Windows
+- interrupt mask to protect access to global resource
+- spinlock on multiprocessor
+- Mutex Dispatcher Object
+  - ![](https://media.discordapp.net/attachments/1131128255735410688/1139056109378883664/image0.jpg?width=1439&height=597)
+
+### Linux Synchronization
+- ก่อน kernel 2.6
+  - ปิด interrupt
+- หลัง 2.6 
+  -  fully preemptive
+- Linux
+  - semaphores
+  - atomic int
+  - spinlock
+  - reader-writer version of both
+- single CPU แทนที่ spinlock ด้วย disable kernel preemption
+- มี `atomic_t` = atomic integer
+- ![](https://media.discordapp.net/attachments/1131128255735410688/1139056660376195122/image0.jpg?width=1439&height=350)
+
+### POSIX synchronization
+- POSIX api
+  - mutex locks
+    - `lock & unlock`
+  - semaphorers
+    - nameed and unmameed
+    - `open wait closed` 
+  - condition variable
+    - `wait and signal`
+
+### Java Synchronization
+- Java rich set
+  - Java monitors
+    - single lock
+    - ถ้า other threads ต้องการ ต้องปลด lock ก่อน
+  - Reentant locks
+    - คล้ายๆ mutex lock
+    - `finally`
+  - Semaphores
+    - เป็น semaphores pipe เลย (Object)
+  - Condition Variables
+    - associated with an `ReentrantLock`
+    - create condition variable using `newCndition()`
+    - thread waits by calling the `await()`
+    - signgal calling the `signal()` method
+
+### Alternatice Approaches
+- Transactional Memory 
+  - ครอบคำว่า `atomic`
+- OpenMP
+  - `#pragma omp critical` เป็นการบอกว่า read เป็น critical section แล้วทำเป็น atomic ป้องกัน thread อื่นเข้ามาทำงานพร้อมกัน
+- Functional Programming Languages
+  - variable เป็น immutable
+  - example golang, scala
+  - ไม่มี stage
